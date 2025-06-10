@@ -5,7 +5,7 @@ set -xeuo pipefail
 # only need to download the configuration_deepseek.py and config.json
 # remove the `quantization_config` in the `config.json`
 # set `num_nextn_predict_layers=0` to disable MTP, which is not currently supported
-huggingface-cli download deepseek-ai/DeepSeek-V3-0324 configuration_deepseek.py config.json
+# huggingface-cli download deepseek-ai/DeepSeek-V3-0324 configuration_deepseek.py config.json
 
 project_name='DAPO'
 exp_name='DAPO-DeepSeek-671b-megatron'
@@ -28,24 +28,27 @@ overlong_penalty_factor=0.1
 
 loss_agg_mode="token-mean"
 
-train_prompt_bsz=512 # must be > n_gpus. need to fix
+# train_prompt_bsz=512 # must be > n_gpus. need to fix
+train_prompt_bsz=256
 n_resp_per_prompt=2
 train_prompt_mini_bsz=16  # mini_bsz * n >= micro_bsz * pp * dp
 
-NNODES=${NNODES:-64}
+NNODES=${NNODES:-32}
 
 # 1. download the dist_ckpt format model from https://huggingface.co/BearBiscuit05/dpsk-v3-671B-BF16-dist_ckpt/tree/main
 # change the MODEL_PATH and MCORE_MODEL_PATH to your own path
 # Paths
-MODEL_PATH="<path_to_dsv3_config>"
-MCORE_MODEL_PATH="<path_to_dpsk-v3-671B-BF16-dist_ckpt>"
-RAY_DATA_HOME=${RAY_DATA_HOME:-"${HOME}/verl"}
-CKPTS_DIR=${CKPTS_DIR:-"${RAY_DATA_HOME}/ckpts/${project_name}/${exp_name}"}
-TRAIN_FILE=${TRAIN_FILE:-"${RAY_DATA_HOME}/data/dapo-math-17k.parquet"}
-aime24_test_path=${RAY_DATA_HOME}/data/aime-2024.parquet
+MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324/"
+MCORE_MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324/"
+RAY_DATA_HOME=${RAY_DATA_HOME:-"${HOME}/verl-pplx"}
+# CKPTS_DIR=${CKPTS_DIR:-"${RAY_DATA_HOME}/ckpts/${project_name}/${exp_name}"}
+# TRAIN_FILE=${TRAIN_FILE:-"${RAY_DATA_HOME}/data/dapo-math-17k.parquet"}
+TRAIN_FILE=/traindata/huida/data/gsm8k/train.parquet
+# aime24_test_path=${RAY_DATA_HOME}/data/aime-2024.parquet
 # TEST_FILE="['$math500_test_path', '$aime24_test_path']"
 
-TEST_FILE="['$aime24_test_path']"
+# TEST_FILE="['$aime24_test_path']"
+TEST_FILE=/traindata/huida/data/gsm8k/test.parquet
 
 # Algorithm
 temperature=1.0
