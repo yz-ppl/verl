@@ -3,6 +3,7 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=96
+#SBATCH --gpus-per-task=8
 #SBATCH --time=12:00:00
 #SBATCH --output=/traindata/%u/runs/verl/slurm-%j.out
 #SBATCH --error=/traindata/%u/runs/verl/slurm-%j.err
@@ -35,6 +36,7 @@ sleep 10
 # Start Ray worker nodes
 for ((i=1; i<${#nodes_array[@]}; i++)); do
     node=${nodes_array[$i]}
+    echo "Starting Ray worker node $node"
     srun \
         --container-image /traindata/enroot_images/verl_dsv3.sqsh \
         --container-mounts "/traindata:/traindata" \
@@ -42,19 +44,23 @@ for ((i=1; i<${#nodes_array[@]}; i++)); do
         --ntasks=1 \
         -w $node \
         ray start --address=$head_node_ip:6379 --block &
-    sleep 5
+    sleep 1
 done
 
-# Run the Python script
+echo "Waiting for all nodes to start and join the cluster..."
+sleep 20
+
+# Run the training script
+echo "Running the training script"
 srun \
     --container-image /traindata/enroot_images/verl_dsv3.sqsh \
     --container-mounts "/traindata:/traindata" \
     --export=ALL \
     --nodes=1 \
     --ntasks=1 \
-    -w $head_node \
+    --overlap \
     bash -c \
     "
     cd /traindata/$USER/verl-pplx
-    recipe/dapo/test_dapo_dspk_671b_megatron.sh
+    bash recipe/dapo/test_dapo_dspk_671b_megatron.sh
     "

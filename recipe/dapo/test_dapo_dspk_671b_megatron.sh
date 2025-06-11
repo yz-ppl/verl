@@ -38,10 +38,11 @@ NNODES=${NNODES:-32}
 # 1. download the dist_ckpt format model from https://huggingface.co/BearBiscuit05/dpsk-v3-671B-BF16-dist_ckpt/tree/main
 # change the MODEL_PATH and MCORE_MODEL_PATH to your own path
 # Paths
-MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324/"
-MCORE_MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324/"
+MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324"
+MCORE_MODEL_PATH="/traindata/senzeyu/mcore_ckpt/DeepSeek-V3-0324"
 RAY_DATA_HOME=${RAY_DATA_HOME:-"${HOME}/verl-pplx"}
 # CKPTS_DIR=${CKPTS_DIR:-"${RAY_DATA_HOME}/ckpts/${project_name}/${exp_name}"}
+CKPTS_DIR=/traindata/$USER/checkpoints/DAPO-DeepSeek-671b-megatron
 # TRAIN_FILE=${TRAIN_FILE:-"${RAY_DATA_HOME}/data/dapo-math-17k.parquet"}
 TRAIN_FILE=/traindata/huida/data/gsm8k/train.parquet
 # aime24_test_path=${RAY_DATA_HOME}/data/aime-2024.parquet
