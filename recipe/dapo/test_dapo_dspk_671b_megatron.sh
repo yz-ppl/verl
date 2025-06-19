@@ -44,12 +44,12 @@ RAY_DATA_HOME=${RAY_DATA_HOME:-"${HOME}/verl-pplx"}
 # CKPTS_DIR=${CKPTS_DIR:-"${RAY_DATA_HOME}/ckpts/${project_name}/${exp_name}"}
 CKPTS_DIR=/traindata/$USER/checkpoints/DAPO-DeepSeek-671b-megatron
 # TRAIN_FILE=${TRAIN_FILE:-"${RAY_DATA_HOME}/data/dapo-math-17k.parquet"}
-TRAIN_FILE=/traindata/huida/data/gsm8k/train.parquet
+TRAIN_FILE=/traindata/yunfan/data/gsm8k/train.parquet
 # aime24_test_path=${RAY_DATA_HOME}/data/aime-2024.parquet
 # TEST_FILE="['$math500_test_path', '$aime24_test_path']"
 
 # TEST_FILE="['$aime24_test_path']"
-TEST_FILE=/traindata/huida/data/gsm8k/test.parquet
+TEST_FILE=/traindata/yunfan/data/gsm8k/test.parquet
 
 # Algorithm
 temperature=1.0
